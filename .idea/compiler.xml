@@ -7,11 +7,11 @@
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.38/57f8f5e02e92a30fd21b80cbd426a4172b5f8e29/lombok-1.18.38.jar" />
         </processorPath>
-        <module name="demo1.main" />
+        <module name="demo2.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="demo1.test" target="17" />
+      <module name="demo2.test" target="17" />
       <module name="demoTest" target="17" />
       <module name="demoTest.main" target="17" />
       <module name="demoTest.test" target="17" />
@@ -22,6 +22,9 @@
       <module name="demo1" options="-parameters" />
       <module name="demo1.main" options="-parameters" />
       <module name="demo1.test" options="-parameters" />
+      <module name="demo2" options="-parameters" />
+      <module name="demo2.main" options="-parameters" />
+      <module name="demo2.test" options="-parameters" />
       <module name="demoTest" options="-parameters" />
       <module name="demoTest.main" options="-parameters" />
       <module name="demoTest.test" options="-parameters" />
