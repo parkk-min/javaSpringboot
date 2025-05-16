@@ -1,4 +1,4 @@
-package com.example.my_test_backend.data;
+package com.example.my_test_backend.data.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
