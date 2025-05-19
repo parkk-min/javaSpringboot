@@ -6,6 +6,7 @@ import com.example.my_test_backend.data.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,12 +31,14 @@ public class ProductDAO {
     }
 
     // 새로운 상품 저장하기
-    public Product saveProduct(String title, String imagesrc, Integer price) {
+    public Product saveProduct(String title, String imagesrc, Integer price, LocalDateTime created, String description) {
         // Product 객체를 생성 (빌더 패턴 사용)
         Product product = Product.builder()
                 .title(title)           // 제목 설정
                 .imagesrc(imagesrc)     // 이미지 경로 설정
                 .price(price)           // 가격 설정
+                .created(created)
+                .description(description)
                 .build();
 
         // 생성한 상품을 DB에 저장하고 반환
@@ -56,7 +59,7 @@ public class ProductDAO {
     }
 
     // 상품 ID로 가격만 업데이트하기
-    public Product updateProductById(Integer id, Integer price) {
+    public Product updateProductById(Integer id, Integer price, LocalDateTime updated, String description) {
         // 해당 ID의 상품을 가져옴
         Optional<Product> product = this.productRepository.findById(id);
 
@@ -64,6 +67,8 @@ public class ProductDAO {
         Product updatedProduct = product.orElse(null);
         if (updatedProduct != null) {
             updatedProduct.setPrice(price); // 가격 수정
+            updatedProduct.setCreated(updated);
+            updatedProduct.setDescription(description);
             // 수정된 내용을 DB에 저장
             return productRepository.save(updatedProduct);
         }
@@ -72,7 +77,7 @@ public class ProductDAO {
         return null;
     }
 
-    //✅ 이 DAO 클래스의 의도성 요약
+    //DAO 클래스의 의도성 요약
     //메서드 이름	목적 설명
     //getAllProducts()	모든 상품을 DB에서 가져온다
     //getProductById(id)	특정 상품 ID로 상품 1개를 가져온다

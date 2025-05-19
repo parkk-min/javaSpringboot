@@ -6,6 +6,7 @@ import com.example.my_test_backend.data.entity.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +60,8 @@ public class ProductService {
      */
     public ProductDTO saveProduct(ProductDTO productDTO) {
         // DAO를 통해 제품 저장, 이미지 URL은 임시로 더미 이미지 사용
-        Product product = this.productDAO.saveProduct(productDTO.getTitle(), "https://dummyimage.com/200x200/00f/fff.jpg&text=product", productDTO.getPrice());
+        Product product = this.productDAO.saveProduct(productDTO.getTitle(), "https://dummyimage.com/200x200/00f/fff.jpg&text=product",
+                productDTO.getPrice(), LocalDateTime.now(), "생성");
         ProductDTO saveproductDTO = ProductDTO.builder()
                 .id(product.getId())
                 .imagesrc(product.getImagesrc())
@@ -76,7 +78,8 @@ public class ProductService {
      */
     public ProductDTO updateProduct(ProductDTO productDTO) {
         // DAO를 통해 제품 가격 업데이트
-        Product product = this.productDAO.updateProductById(productDTO.getId(), productDTO.getPrice());
+        Product product = this.productDAO.updateProductById(productDTO.getId(),
+                productDTO.getPrice(), LocalDateTime.now(), "수정");
         if (product != null) { // 업데이트 성공 시
             ProductDTO updateProduct = ProductDTO.builder()
                     .id(product.getId())
@@ -98,3 +101,7 @@ public class ProductService {
         return this.productDAO.deleteProductById(id); // DAO를 통해 삭제 후 결과 반환
     }
 }
+
+//역할: 실제 비즈니스 로직 수행
+//컨트롤러에서 받은 요청을 처리하고, DAO나 Repository를 통해 DB 작업을 함
+//트랜잭션 처리 및 복잡한 로직을 담당

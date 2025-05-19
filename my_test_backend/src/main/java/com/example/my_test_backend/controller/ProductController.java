@@ -20,7 +20,8 @@ public class ProductController {
 
     /**
      * 모든 제품 목록을 조회합니다.
-     * @return ResponseEntity<List<ProductDTO>> 제품 DTO 리스트와 HTTP 상태 200
+     *
+     * @return ResponseEntity<List < ProductDTO>> 제품 DTO 리스트와 HTTP 상태 200
      */
     @GetMapping(value = "/product-list")
     public ResponseEntity<List<ProductDTO>> getProductList() {
@@ -30,6 +31,7 @@ public class ProductController {
 
     /**
      * 새로운 제품을 추가합니다.
+     *
      * @param productDTO 추가할 제품 정보 (JSON 요청 본문)
      * @return ResponseEntity<ProductDTO> 저장된 제품 DTO와 HTTP 상태 201
      */
@@ -41,6 +43,7 @@ public class ProductController {
 
     /**
      * 기존 제품의 정보를 업데이트합니다.
+     *
      * @param productDTO 업데이트할 제품 정보 (JSON 요청 본문)
      * @return ResponseEntity<ProductDTO> 업데이트된 DTO와 HTTP 상태 200, 실패 시 204
      */
@@ -55,6 +58,7 @@ public class ProductController {
 
     /**
      * 주어진 ID로 제품을 삭제합니다.
+     *
      * @param id 삭제할 제품 ID (경로 변수)
      * @return ResponseEntity<String> 삭제 성공/실패 메시지와 HTTP 상태
      */
@@ -67,3 +71,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("삭제 상품 검색 실패"); // 404 Not Found와 실패 메시지
     }
 }
+
+//역할: 클라이언트 요청을 받고 응답을 반환
+//주로 REST API 경로(/api/product 등)를 정의하고, @GetMapping, @PostMapping 등을 사용
+//서비스 레이어(ProductService)를 호출해서 실제 작업을 처리함
