@@ -3,6 +3,8 @@ package com.example.todo_list.service;
 import com.example.todo_list.data.dao.ToDoDAO;
 import com.example.todo_list.data.dto.ToDoDTO;
 import com.example.todo_list.data.entity.ToDo;
+import com.example.todo_list.exception.MyException;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,7 @@ public class ToDoService {
             ToDoDTO toDoDTO = ToDoDTO.builder()
                     .id(toDo.getId())
                     .title(toDo.getTitle())
+                    .completed(toDo.isCompleted())
                     .build();
             toDoDTOList.add(toDoDTO);
         }
@@ -29,31 +32,38 @@ public class ToDoService {
     }
 
     public ToDoDTO saveToDo(ToDoDTO toDoDTO) {
-        // DAO를 호출해서 데이터를 저장하고 저장된 결과를 ToDo 엔티티 객체로 받아와서 'todo' 변수에 저장
-        ToDo todo = this.toDoDAO.saveToDo(toDoDTO.getTitle(),
-                LocalDateTime.now(), "생성");
-        // 'todo' 변수 (ToDo 엔티티 객체)에 담긴 정보를 가지고 새로운 ToDoDTO 객체를 만듦
+        if (toDoDTO.getTitle().contains("놀기")) {
+            throw new MyException("놀기를 TODO에 추가 할 수 없습니다.");
+        }
+        ToDo todo = this.toDoDAO.saveToDo(toDoDTO.getTitle());
         ToDoDTO saveToDoDTO = ToDoDTO.builder()
-                .id(todo.getId()) // 'todo' (엔티티)에서 getId()로 ID를 가져와 DTO에 설정
-                .title(todo.getTitle()) // 'todo' (엔티티)에서 getTitle()로 제목을 가져와 DTO에 설정
+                .id(todo.getId())
+                .title(todo.getTitle())
                 .build();
         return saveToDoDTO;
     }
 
-    public boolean completeToDoById(Integer id) {
-        ToDo todo = this.toDoDAO.completeToDoById(id);
-        return todo != null;
+    public ToDoDTO completeToDo(Integer id) {
+        ToDo todo = this.toDoDAO.completeToDo(id);
+        if (todo != null) {
+            ToDoDTO toDoDTO = ToDoDTO.builder()
+                    .id(todo.getId())
+                    .title(todo.getTitle())
+                    .completed(true)
+                    .build();
+            return toDoDTO;
+        }
+        return null;
     }
 
-    public boolean deleteIfCompletedById() {
+    public void deleteCompletedToDo() {
         List<ToDo> todolist = this.toDoDAO.getAll();
-
         for (ToDo todo : todolist) {
             if (todo.isCompleted()) {
-                this.toDoDAO.deleteIfCompletedById(todo.getId());
+                this.toDoDAO.deleteToDo(todo.getId());
             }
         }
-        return true;
     }
+
 
 }

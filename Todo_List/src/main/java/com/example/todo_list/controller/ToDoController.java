@@ -26,23 +26,22 @@ public class ToDoController {
         return ResponseEntity.ok().body(savedToDoDTO);
     }
 
-    @PutMapping(value = "/todo-list")
-    public ResponseEntity<String> completeToDoById(@RequestBody ToDoDTO toDoDTO) {
-        boolean success = this.toDoService.completeToDoById(toDoDTO.getId());
-        if (success) {
-            return ResponseEntity.ok("To-Do completed successfully");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("To-Do not completed");
+    @PutMapping(value = "/todo-list/{id}")
+    public ResponseEntity<ToDoDTO> completeToDoById(@PathVariable("id") Integer id) {
+        ToDoDTO toDoDTO = this.toDoService.completeToDo(id);
+        if (toDoDTO != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(toDoDTO);
         }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
     }
 
-    @DeleteMapping(value = "/todo-list")
-    public ResponseEntity<String> deleteTodo() {
-        boolean deleted = this.toDoService.deleteIfCompletedById();
-        if (deleted) {
-            return ResponseEntity.ok().body("Deleted");
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found");
+    @DeleteMapping(value = "/completed-todo")
+    public ResponseEntity<String> deleteCompletedToDo() {
+        this.toDoService.deleteCompletedToDo();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
+
+
 
 }
