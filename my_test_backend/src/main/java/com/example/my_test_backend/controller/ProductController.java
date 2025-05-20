@@ -2,6 +2,7 @@ package com.example.my_test_backend.controller;
 
 import com.example.my_test_backend.data.dto.ProductDTO;
 import com.example.my_test_backend.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +37,7 @@ public class ProductController {
      * @return ResponseEntity<ProductDTO> 저장된 제품 DTO와 HTTP 상태 201
      */
     @PostMapping(value = "/new-product")
-    public ResponseEntity<ProductDTO> addProduct(@RequestBody ProductDTO productDTO) {
+    public ResponseEntity<ProductDTO> addProduct(@Valid @RequestBody ProductDTO productDTO) {
         ProductDTO savedProductDTO = this.productService.saveProduct(productDTO); // 서비스를 통해 제품 저장
         return ResponseEntity.status(HttpStatus.CREATED).body(savedProductDTO); // 201 Created와 함께 DTO 반환
     }
