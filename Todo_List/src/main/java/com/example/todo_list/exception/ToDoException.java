@@ -7,12 +7,13 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@RestController
+@RestControllerAdvice
 public class ToDoException {
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handle(MethodArgumentNotValidException ex) {
@@ -43,7 +44,7 @@ public class ToDoException {
 
     @ExceptionHandler(value = MyException.class)
     public ResponseEntity<String> handleMyException(MyException ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("사용자 정의 예외." + ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("사용자 정의 예외." + ex.getMessage());
     }
 
 }
