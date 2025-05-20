@@ -36,7 +36,6 @@ public class ToDoController {
         }
     }
 
-
     @DeleteMapping(value = "/todo-list")
     public ResponseEntity<String> deleteTodo() {
         boolean deleted = this.toDoService.deleteIfCompletedById();
