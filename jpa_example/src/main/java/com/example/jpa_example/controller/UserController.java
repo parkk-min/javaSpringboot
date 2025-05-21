@@ -1,36 +1,44 @@
 package com.example.jpa_example.controller;
 
-import com.example.jpa_example.data.entity.BuyEntity;
-import com.example.jpa_example.data.entity.UserEntity;
-import com.example.jpa_example.data.repository.BuyEntityRepository;
-import com.example.jpa_example.data.repository.UserEntityRepository;
+import com.example.jpa_example.data.dto.UserDTO;
+import com.example.jpa_example.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping(value = "/userinfo")
 public class UserController {
-    private final UserEntityRepository userRepository;
-    private final BuyEntityRepository buyEntityRepository;
+    private final UserService userService;
 
-    @GetMapping(value = "/user-list")
-    public List<UserEntity> userList() {
-        return this.userRepository.findAll();
+    @GetMapping(value = "user-list")
+    public ResponseEntity<List<UserDTO>> getUserList() {
+        List<UserDTO> userDTOList = this.userService.getAllUsers();
+        return ResponseEntity.ok(userDTOList);
     }
 
-    @GetMapping(value = "/buy-list")
-    public List<BuyEntity> buyList() {
-        return this.buyEntityRepository.findAll();
+    @GetMapping(value = "addr/{addr}")
+    public ResponseEntity<List<UserDTO>> getUsersByAddr(@PathVariable("addr") String addr) {
+        List<UserDTO> userDTOList = this.userService.getUsersByAddr(addr);
+        return ResponseEntity.ok(userDTOList);
     }
 
-    @GetMapping(value = "/userInfo/{addr}")
-    public List<UserEntity> userInfo(@PathVariable("addr") String addr) {
-        return this.userRepository.searchUserInfo(addr);
+    @GetMapping(value = "birthyear/{birthyear}")
+    public ResponseEntity<List<UserDTO>> getUserByBirthyear(@PathVariable("birthyear") Integer birthyear) {
+        List<UserDTO> userDTOList = this.userService.getUserByBirthyear(birthyear);
+        return ResponseEntity.ok(userDTOList);
     }
 
+    @GetMapping(value = "addr-birthyear")
+    public ResponseEntity<List<UserDTO>> getUserAddrBirthyear(
+            @RequestParam("addr") String addr,
+            @RequestParam("birthyear") Integer birthyear) {
+
+        List<UserDTO> userDTOList = this.userService.getUserAddrBirthyear(addr, birthyear);
+        return ResponseEntity.ok(userDTOList);
+    }
 
 }

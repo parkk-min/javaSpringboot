@@ -4,11 +4,9 @@ import com.example.todo_list.data.dao.ToDoDAO;
 import com.example.todo_list.data.dto.ToDoDTO;
 import com.example.todo_list.data.entity.ToDo;
 import com.example.todo_list.exception.MyException;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
