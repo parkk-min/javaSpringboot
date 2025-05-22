@@ -19,7 +19,7 @@ public class UserDAO {
     }
 
     public boolean existsById(String id) {
-        return  this.userRepository.existsById(id);
+        return this.userRepository.existsById(id);
     }
 
     public UserEntity getUserById(String id) {

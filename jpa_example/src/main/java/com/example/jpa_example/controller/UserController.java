@@ -22,6 +22,18 @@ public class UserController {
         return ResponseEntity.ok(userDTOList);
     }
 
+    @GetMapping(value = "user-id/{id}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable("id") String id) {
+        UserDTO userDTO = this.userService.getUserById(id);
+        return ResponseEntity.ok(userDTO);
+    }
+
+    @GetMapping(value = "user-id-exists/{id}")
+    public ResponseEntity<Boolean> existsById(@PathVariable("id") String id) {
+        boolean exists = this.userService.existsById(id);
+        return ResponseEntity.ok(exists);
+    }
+
     @GetMapping(value = "addr/{addr}")
     public ResponseEntity<List<UserDTO>> getUsersByAddr(@PathVariable("addr") String addr) {
         List<UserDTO> userDTOList = this.userService.getUsersByAddr(addr);

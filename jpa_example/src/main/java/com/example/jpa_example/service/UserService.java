@@ -34,6 +34,10 @@ public class UserService {
         return userDTOList;
     }
 
+    public boolean existsById(String id) {
+        return this.userDAO.existsById(id);
+    }
+
     public UserDTO getUserById(String userId) {
         UserEntity userEntity = this.userDAO.getUserById(userId);
         if (userEntity == null) {
