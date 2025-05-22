@@ -2,7 +2,9 @@ package com.example.jpa_example.controller;
 
 import com.example.jpa_example.data.dto.UserDTO;
 import com.example.jpa_example.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,5 +42,13 @@ public class UserController {
         List<UserDTO> userDTOList = this.userService.getUserAddrBirthyear(addr, birthyear);
         return ResponseEntity.ok(userDTOList);
     }
+
+    @PostMapping(value = "new-user")
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
+        UserDTO savedUserDTO = this.userService.saveUser(userDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedUserDTO);
+
+    }
+
 
 }

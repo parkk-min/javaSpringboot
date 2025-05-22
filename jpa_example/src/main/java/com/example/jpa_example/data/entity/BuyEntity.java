@@ -18,18 +18,18 @@ public class BuyEntity {
 
     @ManyToOne
     @JoinColumn(name = "userid", nullable = false)
-    private UserEntity user;
+    private UserEntity userid;
 
-    @Column(name = "prodName", nullable = false, length = 6)
+    @Column(name = "prodname", nullable = false, length = 6)
     private String prodName;
 
-    @Column(name = "groupName", length = 4)
+    @Column(name = "groupname", length = 4)
     private String groupName;
 
     @Column(name = "price", nullable = false)
     private Integer price;
 
     @Column(name = "amount", nullable = false)
-    private Short amount;
+    private Integer amount;
 
 }

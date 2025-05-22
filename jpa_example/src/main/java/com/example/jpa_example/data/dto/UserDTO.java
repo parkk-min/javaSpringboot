@@ -1,5 +1,6 @@
 package com.example.jpa_example.data.dto;
 
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

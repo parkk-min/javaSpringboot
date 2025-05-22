@@ -3,7 +3,7 @@ package com.example.jpa_example.service;
 import com.example.jpa_example.data.dao.UserDAO;
 import com.example.jpa_example.data.dto.UserDTO;
 import com.example.jpa_example.data.entity.UserEntity;
-import com.example.jpa_example.exception.UserException;
+import com.example.jpa_example.exception.MyException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +37,7 @@ public class UserService {
     public UserDTO getUserById(String userId) {
         UserEntity userEntity = this.userDAO.getUserById(userId);
         if (userEntity == null) {
-            throw new UserException("현재 User의 정보가 없습니다.");
+            throw new MyException("현재 User의 정보가 없습니다.");
         }
         UserDTO userDTO = UserDTO.builder()
                 .id(userEntity.getUserID())
@@ -104,6 +104,22 @@ public class UserService {
                     .build());
         }
         return userDTOList;
+    }
+
+    public UserDTO saveUser(UserDTO userDTO) {
+        UserEntity user = this.userDAO.saveUser(userDTO.getId(), userDTO.getName(), userDTO.getBirthyear(),
+                userDTO.getAddr(), userDTO.getMobile1(), userDTO.getMobile2(), userDTO.getHeight(), userDTO.getMdate());
+        UserDTO saveUserDTO = UserDTO.builder()
+                .id(user.getUserID())
+                .name(user.getUsername())
+                .birthyear(user.getBirthYear())
+                .addr(user.getAddr())
+                .mobile1(user.getMobile1())
+                .mobile2(user.getMobile2())
+                .height(user.getHeight())
+                .mdate(user.getMdate())
+                .build();
+        return saveUserDTO;
     }
 
 

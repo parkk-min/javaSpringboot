@@ -17,13 +17,13 @@ import java.time.Instant;
 @Builder
 public class UserEntity {
     @Id
-    @Column(name = "userID", nullable = false, length = 8)
+    @Column(name = "userid", nullable = false, length = 8)
     private String userID;
 
     @Column(name = "username")
     private String username;
 
-    @Column(name = "birthYear", nullable = false)
+    @Column(name = "birthyear", nullable = false)
     private Integer birthYear;
 
     @Column(name = "addr")
