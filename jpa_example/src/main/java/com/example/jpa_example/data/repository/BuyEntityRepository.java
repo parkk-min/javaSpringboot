@@ -13,4 +13,7 @@ public interface BuyEntityRepository extends JpaRepository<BuyEntity, String> {
     @Query(value = "select * from buytbl where userid=:userid", nativeQuery = true)
     List<BuyEntity> searchUserInfo(@Param("userid") String userid);
 
+    @Query(value = "select  count(*) from buytbl where userid=:userid", nativeQuery = true)
+    int searchUserInfoCount(@Param("userid") String userid);
+
 }

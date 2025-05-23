@@ -45,6 +45,7 @@ public class UserDAO {
                 .userID(userid)
                 .username(username)
                 .birthYear(birthyear)
+                .addr(addr)
                 .mobile1(mobile1)
                 .mobile2(mobile2)
                 .height(height)

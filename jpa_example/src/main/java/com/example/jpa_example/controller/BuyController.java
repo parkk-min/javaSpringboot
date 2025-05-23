@@ -5,9 +5,7 @@ import com.example.jpa_example.service.BuyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,5 +27,10 @@ public class BuyController {
             return ResponseEntity.status(250).build();
         }
         return ResponseEntity.ok(buyDTOList);
+    }
+    @PostMapping(value = "new-list")
+    public ResponseEntity<BuyDTO> createBuy(@RequestBody BuyDTO buyDTO) {
+        BuyDTO savedBuyDTO = this.buyService.saveBuy(buyDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedBuyDTO);
     }
 }
