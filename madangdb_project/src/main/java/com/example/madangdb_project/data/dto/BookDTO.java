@@ -1,4 +1,4 @@
-package com.example.madang_project.data.dto;
+package com.example.madangdb_project.data.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,12 +7,12 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Data
 public class BookDTO {
-    private Integer bookId;
+    private Integer  bookId;
     private String bookName;
     private String publisher;
     private Integer price;

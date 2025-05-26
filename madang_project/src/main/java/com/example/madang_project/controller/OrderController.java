@@ -1,35 +1,31 @@
 package com.example.madang_project.controller;
 
-import com.example.madang_project.data.entity.BookEntity;
-import com.example.madang_project.data.entity.CustomerEntity;
-import com.example.madang_project.data.entity.OrderEntity;
-import com.example.madang_project.data.repository.OrderEntityRepository;
+import com.example.madang_project.data.dto.OrderDTO;
+import com.example.madang_project.service.OrderService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping(value = "/order-info")
 public class OrderController {
-    private final OrderEntityRepository orderEntityRepository;
+    private final OrderService orderService;
 
-    @GetMapping(value = "/orderlist")
-    public List<OrderEntity> getOrderList() {
-        return this.orderEntityRepository.findAll();
+    @GetMapping(value = "previous")
+    public ResponseEntity<List<OrderDTO>> getOrderPrevious(@RequestParam LocalDate date) {
+        List<OrderDTO> combinedList = this.orderService.getPreviousDate(date);
+        return ResponseEntity.ok(combinedList);
     }
 
-    @GetMapping(value = "/order/{id}")
-    public OrderEntity getOrder(@PathVariable Integer id) {
-        OrderEntity order = this.orderEntityRepository.findById(id).orElse(null);
-        CustomerEntity customer = order.getCustid();
-        BookEntity book = order.getBookid();
-        Set<OrderEntity> order2 = book.getOrders();
-        System.out.println(customer.getCustomername() + customer.getAddress());
-        return order;
+    @GetMapping(value = "after")
+    public ResponseEntity<List<OrderDTO>> getOrderAfter(@RequestParam LocalDate date) {
+        List<OrderDTO> combinedList = this.orderService.getAfterDate(date);
+        return ResponseEntity.ok(combinedList);
     }
+
 
 }

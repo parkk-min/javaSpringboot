@@ -19,12 +19,12 @@ public class CustomerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "custid", nullable = false)
-    private Integer id;
+    private Integer custId;
 
     @Size(max = 10)
     @NotNull
     @Column(name = "customername", nullable = false, length = 10)
-    private String customername;
+    private String customerName;
 
     @Size(max = 15)
     @Column(name = "address", length = 15)
@@ -41,9 +41,9 @@ public class CustomerEntity {
     @Size(max = 10)
     @ColumnDefault("'bronze'")
     @Column(name = "customer_class", length = 10)
-    private String customerClass;
+    private String customer_class;
 
-    @OneToMany(mappedBy = "custid")
+    @OneToMany(mappedBy = "custId")
 //    @JsonManagedReference
     private Set<OrderEntity> orders = new LinkedHashSet<>();
 

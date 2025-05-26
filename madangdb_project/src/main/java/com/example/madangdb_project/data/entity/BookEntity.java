@@ -1,12 +1,10 @@
-package com.example.madang_project.data.entity;
+package com.example.madangdb_project.data.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
+import lombok.*;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -15,15 +13,18 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "book")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class BookEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "bookid", nullable = false)
-    private Integer bookId;
+    private Integer bookid;
 
     @Size(max = 255)
     @Column(name = "bookname")
-    private String bookName;
+    private String bookname;
 
     @Size(max = 255)
     @Column(name = "publisher")
@@ -33,12 +34,8 @@ public class BookEntity {
     @Column(name = "price", nullable = false)
     private Integer price;
 
-    @ColumnDefault("100")
-    @Column(name = "stock_bookcount")
-    private Integer stock_bookcount;
-
-    @OneToMany(mappedBy = "bookId")
-//    @JsonManagedReference
+    @OneToMany(mappedBy = "book")
+    @JsonManagedReference
     private Set<OrderEntity> orders = new LinkedHashSet<>();
 
 }

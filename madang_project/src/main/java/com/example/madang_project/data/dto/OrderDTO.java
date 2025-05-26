@@ -9,9 +9,10 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 public class OrderDTO {
-    private Integer id;
-    private Integer saleprice;
-    private LocalDate orderdate;
-    private Integer sellBookcount;
-
+    private Integer orderId;
+    private Integer bookId;
+    private Integer custId;
+    private Integer salePrice;
+    private LocalDate order_date;
+    private Integer sell_bookcount;
 }

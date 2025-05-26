@@ -5,6 +5,7 @@ import com.example.madang_project.data.repository.OrderEntityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -12,8 +13,12 @@ import java.util.List;
 public class OrderDAO {
     private final OrderEntityRepository orderEntityRepository;
 
-    public List<OrderEntity> orderFindAll() {
-        return orderEntityRepository.findAll();
+    public List<OrderEntity> previousOrderDate(LocalDate date) {
+        return this.orderEntityRepository.previousOrderDate(date);
+    }
+
+    public List<OrderEntity> AfterOrOrderDate(LocalDate date) {
+        return this.orderEntityRepository.AfterOrOrderDate(date);
     }
 
 }

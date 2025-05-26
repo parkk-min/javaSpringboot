@@ -1,4 +1,4 @@
-package com.example.madang_project.data.dto;
+package com.example.madangdb_project.data.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,14 +7,15 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OrderInfoDTO {
+@Data
+public class OrderDTO {
     private Integer orderId;
-    private String customerName;
-    private String bookName;
+    private Integer custId;
+    private Integer bookId;
     private Integer salePrice;
-    private LocalDate order_date;
+    private LocalDate orderDate;
 }
+

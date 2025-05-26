@@ -1,11 +1,9 @@
-package com.example.madang_project.data.entity;
+package com.example.madangdb_project.data.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -13,33 +11,31 @@ import java.time.LocalDate;
 @Setter
 @Entity
 @Table(name = "orders")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class OrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "orderid", nullable = false)
-    private Integer orderId;
+    private Integer orderid;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "custid", nullable = false)
-//    @JsonBackReference
-    private CustomerEntity custId;
+    private CustomerEntity cust;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "bookid", nullable = false)
-//    @JsonBackReference
-    private BookEntity bookId;
+    private BookEntity book;
 
     @NotNull
     @Column(name = "saleprice", nullable = false)
-    private Integer salePrice;
+    private Integer saleprice;
 
     @NotNull
-    @Column(name = "order_date", nullable = false)
-    private LocalDate order_date;
+    @Column(name = "orderdate", nullable = false)
+    private LocalDate orderdate;
 
-    @ColumnDefault("1")
-    @Column(name = "sell_bookcount")
-    private Integer sell_bookcount;
 }
