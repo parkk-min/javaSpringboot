@@ -18,8 +18,9 @@ export default function Login() {
                 }), {
                     withCredentials: true
                 });
-            setMessage(response.data.result);
-            navigate("/admin");
+            setMessage(response.data.role[0].authority);
+
+            // navigate("/admin");
         } catch (error) {
             if (error.response && error.response.status === 401) {
                 setMessage(error.response.data.result);
