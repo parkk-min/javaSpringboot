@@ -18,6 +18,7 @@ public class BookService {
 
     public BookDTO getBookById(Integer id) {
         BookEntity bookEntity = this.bookDAO.getBookById(id);
+
         List<OrderInfoDTO> orderInfoDTOList = new ArrayList<>();
 
         for (OrderEntity orderEntity : bookEntity.getOrders()) {
