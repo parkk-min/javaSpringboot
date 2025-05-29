@@ -46,7 +46,13 @@ public class SecurityConfig {
             responseData.put("username", userDetails.getUsername()); // 사용자 이름 저장
             responseData.put("role", userDetails.getAuthorities()); // 권한(ROLE) 정보 저장
 
+
+            // HttpServletRequest에서 CSRF 토큰을 가져옵니다.
+            // CsrfToken.class.getName()은 "org.springframework.security.web.csrf.CsrfToken" 문자열을 키로 사용해 요청 속성에서 CSRF 토큰을 조회합니다.
             CsrfToken token = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
+
+            // 응답 데이터(Map 객체)에 CSRF 토큰 값을 "csrf-token" 키로 추가합니다.
+            // token.getToken()은 CSRF 토큰의 실제 문자열 값을 반환합니다.
             responseData.put("csrf-token", token.getToken());
 
             // 객체를 JSON으로 변환하기 위한 Jackson ObjectMapper 사용
@@ -101,14 +107,12 @@ public class SecurityConfig {
                     authorize.requestMatchers("/user").hasAnyRole("USER", "ADMIN"); // USER 또는 ADMIN 접근 가능
                     authorize.requestMatchers("/user/**").hasAnyRole("USER", "ADMIN"); // /user 하위 경로도 위와 동일
                     authorize.anyRequest().authenticated();  // 그 외 모든 요청은 인증 필요
-                })
-                .formLogin(form ->
+                }).formLogin(form ->
                         // 로그인 관련 설정
                         form.loginPage("/login") // 사용자 정의 로그인 페이지 경로
                                 .successHandler(authenticationSuccessHandler())  // 성공 시 핸들러 설정
                                 .failureHandler(authenticationFailureHandler()) // 실패 시 핸들러 설정
-                )
-                .logout(logout ->
+                ).logout(logout ->
                         // 클라이언트에서 "/logout" 주소로 요청이 오면 로그아웃 처리
                         logout.logoutUrl("/logout")
                                 // 로그아웃 성공 시 실행할 핸들러 지정 (예: JSON으로 메시지 응답 등)
@@ -123,14 +127,12 @@ public class SecurityConfig {
                                     SecurityContextHolder.clearContext();
                                 })
                                 // 브라우저에서 저장된 JSESSIONID 쿠키도 삭제 (완전한 로그아웃)
-                                .deleteCookies("JSESSIONID")
-                )
+                                .deleteCookies("JSESSIONID"))
                 // CORS 설정: 다른 도메인에서 요청이 올 수 있도록 허용
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration corsConfiguration = new CorsConfiguration();  //  다른 포트/도메인의 프론트엔드에서 요청을 허용할지 설정하는 객체
                     corsConfiguration.addAllowedOrigin("http://localhost:3000"); // 허용할 프론트 주소
-                    corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:3000",
-                            "http://localhost:3001", "http://localhost:3002")); // 여러 주소 허용
+                    corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:3001", "http://localhost:3002")); // 여러 주소 허용
                     corsConfiguration.addAllowedHeader("*"); // 모든 헤더 허용
                     corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // 허용할 HTTP 메소드
                     corsConfiguration.setAllowCredentials(true); // 쿠키와 같은 인증 정보 전송 허용
@@ -139,13 +141,12 @@ public class SecurityConfig {
                 // 세션 관리 설정 종료
                 .sessionManagement(session ->
                         session.maximumSessions(1) // 최대 허용 세션 수를 1로 제한. 즉, 한 사용자당 동시에 1개의 세션만 허용
-                                .maxSessionsPreventsLogin(false) // 동일 사용자가 새로 로그인 시도 시 기존 세션을 유지하고 새 로그인을 허용 (true면 새 로그인 차단)
-                                .expiredSessionStrategy(event -> {
-                                    HttpServletResponse response = event.getResponse(); // HTTP 응답 객체를 가져옴
-                                    response.setCharacterEncoding("UTF-8");
-                                    response.getWriter().write("다른 호스트에서 로그인하여 현재 세션이 만료 되었습니다.");
-                                }))
-                .exceptionHandling(exception -> // 인증 예외 처리 설정 시작
+                        .maxSessionsPreventsLogin(false) // 중복 로그인 허용 (기존 세션 만료됨) (true면 새 로그인 차단)-여러 브라우저 사용시 활용가능
+                        .expiredSessionStrategy(event -> {
+                            HttpServletResponse response = event.getResponse(); // HTTP 응답 객체를 가져옴
+                            response.setCharacterEncoding("UTF-8");
+                            response.getWriter().write("다른 호스트에서 로그인하여 현재 세션이 만료 되었습니다.");
+                        })).exceptionHandling(exception -> // 인증 예외 처리 설정 시작
                         exception.authenticationEntryPoint(this.customAuthenticationEntryPoint) // 인증 실패 시 호출할 커스텀 인증 진입점 설정
                 ); // 예외 처리 설정 종료
         return http.build(); // 설정 완료 후 SecurityFilterChain 반환

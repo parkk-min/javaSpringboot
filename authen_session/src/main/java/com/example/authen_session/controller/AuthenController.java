@@ -28,12 +28,10 @@ public class AuthenController {
         return "Hello World";
     }
 
-
     @GetMapping(value = "/admin")
     public String admin() {
         return "Hello Admin";
     }
-
 
     @GetMapping(value = "/csrf-token")
     public ResponseEntity<Map<String, String>> csrfToken(HttpServletRequest request) {
