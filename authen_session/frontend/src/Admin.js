@@ -31,7 +31,7 @@ export default function Admin() {
                     headers: {
                         "X-CSRF-TOKEN": csrfToken // 서버로 전송될 CSRF 토큰
                     },
-                    withCredentials: true,
+                    withCredentials: true
                 });
             setMessage(response.data);
         } catch (error) {

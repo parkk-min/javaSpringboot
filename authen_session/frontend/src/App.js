@@ -21,7 +21,7 @@ function App() {
                 dispatch(setToken(response.data["csrf-token"]));
                 console.log(response.data["csrf-token"]);
             } catch (error) {
-
+                console.log(error)
             }
         }
 
