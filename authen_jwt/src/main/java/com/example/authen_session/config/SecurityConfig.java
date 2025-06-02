@@ -11,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -32,9 +33,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final AuthenticationConfiguration authenticationConfiguration;
-
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
-
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
@@ -74,15 +73,11 @@ public class SecurityConfig {
                     corsConfiguration.setAllowCredentials(true); // 쿠키와 같은 인증 정보 전송 허용
                     return corsConfiguration; // 최종 설정 반환
                 }))
-                // 세션 관리 설정 종료
+
                 .sessionManagement(session ->
-                        session.maximumSessions(1) // 최대 허용 세션 수를 1로 제한. 즉, 한 사용자당 동시에 1개의 세션만 허용
-                                .maxSessionsPreventsLogin(false) // 중복 로그인 허용 (기존 세션 만료됨) (true면 새 로그인 차단)-여러 브라우저 사용시 활용가능
-                                .expiredSessionStrategy(event -> {
-                                    HttpServletResponse response = event.getResponse(); // HTTP 응답 객체를 가져옴
-                                    response.setCharacterEncoding("UTF-8");
-                                    response.getWriter().write("다른 호스트에서 로그인하여 현재 세션이 만료 되었습니다.");
-                                })).exceptionHandling(exception -> // 인증 예외 처리 설정 시작
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+                .exceptionHandling(exception -> // 인증 예외 처리 설정 시작
                         exception.authenticationEntryPoint(this.customAuthenticationEntryPoint) // 인증 실패 시 호출할 커스텀 인증 진입점 설정
                 ); // 예외 처리 설정 종료
         return http.build(); // 설정 완료 후 SecurityFilterChain 반환
