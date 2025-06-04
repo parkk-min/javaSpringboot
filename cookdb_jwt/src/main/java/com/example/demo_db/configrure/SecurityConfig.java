@@ -64,7 +64,7 @@ public class SecurityConfig {
 
 
                 .authorizeHttpRequests(authorize ->{
-                    authorize.requestMatchers("/", "/admin-join", "/login").permitAll();
+                    authorize.requestMatchers("/", "/admin-join", "/login","/reissue").permitAll();
                     authorize.requestMatchers("/create-userinfo/join" ,"/create-userinfo/add-buyinfo").hasRole("ADMIN");
 //                    authorize.requestMatchers("/user").hasAnyRole("USER", "ADMIN");
 //                    authorize.requestMatchers("/user/**").hasAnyRole("USER", "ADMIN");

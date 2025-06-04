@@ -12,12 +12,14 @@ import java.util.Date;
 @Component
 public class JwtUtil {
     private SecretKey secretKey;
+
     public JwtUtil(@Value("${jwt.secret.key}") String scretKey) {
         this.secretKey = new SecretKeySpec(scretKey.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
     }
 
-    public String createToken(String username, String role, Long expiration) {
+    public String createToken(String category, String username, String role, Long expiration) {
         return Jwts.builder()
+                .claim("category", category)
                 .claim("username", username)
                 .claim("role", role)
                 .issuedAt(new Date(System.currentTimeMillis()))
@@ -26,9 +28,24 @@ public class JwtUtil {
                 .compact();
     }
 
+    public String getCategory(String token) {
+        return Jwts.parser()
+                .verifyWith(this.secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .get("category")
+                .toString();
+    }
+
     public String getUsername(String token) {
-        return Jwts.parser().verifyWith(this.secretKey).build().
-                parseSignedClaims(token).getPayload().get("username").toString();
+        return Jwts.parser()
+                .verifyWith(this.secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .get("username")
+                .toString();
     }
 
     public String getRole(String token) {
@@ -40,7 +57,6 @@ public class JwtUtil {
         return Jwts.parser().verifyWith(this.secretKey).build()
                 .parseSignedClaims(token).getPayload().getExpiration().before(new Date());
     }
-
 
 
 }
