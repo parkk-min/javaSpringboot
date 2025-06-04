@@ -6,5 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AuthenRepository extends JpaRepository<AuthenEntity, String> {
-    String username(String username);
 }

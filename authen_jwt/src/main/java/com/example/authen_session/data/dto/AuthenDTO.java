@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class AuthenDTO {
-    private String username; // id는 username 으로 고정이다.
-    private String password; // pw는 password 로 고정이다.
+    private String username;
+    private String password;
 }

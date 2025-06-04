@@ -1,23 +1,26 @@
 package com.example.authen_session.data.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name="authenticationtbl")
 @Builder
-@Table(name = "authenticationtbl")
 public class AuthenEntity {
     @Id
-    private String username; // id는 username 으로 고정이다.
+    private String username;
 
     @Column(nullable = false)
-    private String password; // pw는 password 로 고정이다.
+    private String password;
 
     @Column(nullable = false)
     private String role;
